@@ -17,6 +17,10 @@ spec:
       containers:
       - image: josemaord/examplevotingapp_worker
         name: worker
+        volumeMounts:
+          - mountPath: "/mnt/secrets-store"
+            name: secrets-store
+            readOnly: true
         env:
           - name: DB_USER
             valueFrom:
@@ -30,3 +34,10 @@ spec:
                 key: dbpassword
           - name: DB_SERVER
             value: db
+      volumes:
+        - name: secrets-store
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: worker-secret-provider
