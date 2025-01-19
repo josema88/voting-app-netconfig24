@@ -19,8 +19,14 @@ spec:
         name: worker
         env:
           - name: DB_USER
-            value: postgres
+            valueFrom:
+              secretKeyRef:
+                name: worker-secret
+                key: dbuser
           - name: DB_PASSWORD
-            value: postgres
+            valueFrom:
+              secretKeyRef:
+                name: worker-secret
+                key: dbpassword
           - name: DB_SERVER
             value: db
